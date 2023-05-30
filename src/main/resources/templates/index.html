@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Салон краси</title>
+<!--  <link rel="stylesheet" href="css/styles.css">-->
+<!--  <link th:href="@{/css/styles.css}" rel="stylesheet" />-->
+
+  <link rel="stylesheet" type="text/css" href="/css/styles.css"/>
+
+</head>
+<body>
+<nav id="navbar">
+  <div class="logo">LOGO</div>
+  <ul id="nav-links" class="nav-links">
+    <li><a id="about-us-link" href="#about">Про нас</a></li>
+    <li><a id="services-link" href="#services">Послуги</a></li>
+    <li><a id="contacts-link" href="#contacts">Контакти</a></li>
+    <li><a href="#login">Вхід</a></li>
+    <li><a href="#openModal">Онлайн запис</a></li>
+    <li><a href="/shop">Магазин</a></li>
+  </ul>
+  <div id="menu-icon">&#9776;</div>
+</nav>
+
+
+<section id="hero" th:style="'background: url(/img/main.png) no-repeat center center fixed;'">
+  <div class="hero-content">
+    <h1>AS</h1>
+    <p>beauty studio</p>
+  </div>
+</section>
+
+
+
+
+
+
+<div id="openModal" class="booking">
+  <div class="booking-dialog">
+    <div class="booking-content">
+      <div class="booking-header">
+        <h3 class="booking-title">Заголовок</h3>
+        <a href="#close" title="Close" class="close">×</a>
+      </div>
+      <div class="booking-body">
+        <form action="/bookService" id="booking-form" method="post">
+          <h2>Онлайн бронювання</h2>
+          <label for="service">Послуга:</label>
+          <select id="service" name="serviceItem" required>
+            <optgroup th:each="type : ${serviceType}" th:label="${type.getName()}">
+              <option th:each="item : ${services}" th:if="${item.getCategoryId()} == ${type}" th:value="${item.getId()}" th:text="${item.getName()}"/>
+            </optgroup>
+          </select>
+          <br>
+
+          <label for="date">Дата:</label>
+          <input type="date" id="date" name="date" required >
+          <br>
+
+          <label for="time">Час:</label>
+          <input type="time" id="time" name="time" required >
+          <br>
+
+          <label for="name">Ім'я:</label>
+          <input type="text" id="name" name="name" required >
+          <br>
+
+          <label for="phone">Телефон:</label>
+          <input type="tel" id="phone" name="phone" required >
+          <br>
+
+          <button type="submit" value="Submit" >Submit</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div th:if="${showPopup} == true" id="popup" class="popup">
+  <div class="popup-content">
+    <div class="popup-header">
+      <h2 class="popup-title">Дякуємо за бронювання!</h2>
+      <a class="popup-close">&times;</a>
+    </div>
+    <!--тут контент-->
+  </div>
+</div>
+
+
+
+
+<section id="about-us">
+  <div class="about-us-content">
+    <div class="about-image">
+      <img src="img/mainpage.JPG" alt="About us">
+    </div>
+    <div class="about-text">
+      <h2>Про нас</h2>
+      <p>ми гарний салон краси дякую що обрали нас</p>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <h2>Послуги</h2>
+  <div class="services-grid">
+    <div class="service-item" id="coloring">
+      <img src="img/coloring.jpg" alt="Фарбування">
+      <h1>Фарбування</h1>
+    </div>
+    <div class="service-item" id="haircuts">
+      <img src="img/haircuts.jpg" alt="Стрижки">
+      <h1>Стрижки</h1>
+    </div>
+    <div class="service-item" id="treatment">
+      <img src="img/treatment.jpg" alt="Лікування шкіри голови та волосся">
+      <h1>Лікування шкіри голови та волосся</h1>
+    </div>
+    <div class="service-item" id="hairstyles">
+      <img src="img/hairstyles.jpg" alt="Зачіски">
+      <h1>Зачіски</h1>
+    </div>
+    <div class="service-item" id="makeup">
+      <img src="img/makeup.jpg" alt="Макіяж">
+      <h1>Макіяж</h1>
+    </div>
+  </div>
+
+  <div class="modal" id="coloring-modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Фарбування</h2>
+      <ul th:each="item : ${services}">
+        <li th:if="${item.getCategoryId().getId()} == 5">
+          <span th:if="${item.getMaxPrice()} == null" th:text="${item.getName()} + '     ' + ${item.getPrice()} + 'грн.'" />
+          <span th:if="${item.getMaxPrice()} != null" th:text="${item.getName()} + '     ' + ${item.getPrice()} + '-' + ${item.getMaxPrice()} + 'грн.'" />
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="modal" id="haircuts-modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Стрижки</h2>
+      <ul th:each="item : ${services}">
+        <li th:if="${item.getCategoryId().getId()} == 4">
+          <span th:if="${item.getMaxPrice()} == null" th:text="${item.getName()} + '     ' + ${item.getPrice()} + 'грн.'" />
+          <span th:if="${item.getMaxPrice()} != null" th:text="${item.getName()} + '     ' + ${item.getPrice()} + '-' + ${item.getMaxPrice()} + 'грн.'" />
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="modal" id="treatment-modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Лікування шкіри голови та волосся</h2>
+      <ul th:each="item : ${services}">
+        <li th:if="${item.getCategoryId().getId()} == 3">
+          <span th:if="${item.getMaxPrice()} == null" th:text="${item.getName()} + '     ' + ${item.getPrice()} + 'грн.'" />
+          <span th:if="${item.getMaxPrice()} != null" th:text="${item.getName()} + '     ' + ${item.getPrice()} + '-' + ${item.getMaxPrice()} + 'грн.'" />
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="modal" id="hairstyles-modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Зачіски</h2>
+      <ul th:each="item : ${services}">
+        <li th:if="${item.getCategoryId().getId()} == 2">
+          <span th:if="${item.getMaxPrice()} == null" th:text="${item.getName()} + '     ' + ${item.getPrice()} + 'грн.'" />
+          <span th:if="${item.getMaxPrice()} != null" th:text="${item.getName()} + '     ' + ${item.getPrice()} + '-' + ${item.getMaxPrice()} + 'грн.'" />
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="modal" id="makeup-modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Макіяж</h2>
+      <ul th:each="item : ${services}">
+        <li th:if="${item.getCategoryId().getId()} == 1">
+          <span th:if="${item.getMaxPrice()} == null" th:text="${item.getName()} + '     ' + ${item.getPrice()} + 'грн.'" />
+          <span th:if="${item.getMaxPrice()} != null" th:text="${item.getName()} + '     ' + ${item.getPrice()} + '-' + ${item.getMaxPrice()} + 'грн.'" />
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+
+
+</section>
+
+<div id="info-partner">
+  <div id="contacts" class="info">
+    <h2>Інформація</h2>
+    <ul>
+      <li>Час роботи: 10:00 - 18:00</li>
+      <li>Адреса: Вул. Гоголівська, 37/2, м. Київ</li>
+      <li>Номер телефону: +380 678 740 386</li>
+      <li>Соц. мережі:
+        <a href="https://www.instagram.com/your_instagram_link" target="_blank"><img src="instagram_icon.png" alt="Instagram"></a>
+        <a href="https://www.facebook.com/your_facebook_link" target="_blank"><img src="facebook_icon.png" alt="Facebook"></a>
+      </li>
+    </ul>
+  </div>
+  <div class="partner">
+    <h2>Партнер</h2>
+    <img src="partner_logo.png" alt="Logo">
+  </div>
+</div>
+
+<footer>
+  <div class="footer-container">
+    <p class="footer-text">© 2023 AS Beauty Studio. Усі права захищені.</p>
+  </div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+<a href="tel:+380678740386" class="call-button">&#9742;</a>
+
+</body>
+<script type="text/javascript">
+  document.querySelector('#date').addEventListener('change', function (e) {
+    var day = new Date(e.target.value).getUTCDay();
+    // Дні тижня пронумеровані:
+    if ([0, 6].includes(day)) {
+      e.preventDefault();
+      e.target.value = '';
+      alert('Вибачте, вихідні дні не доступні для бронювання');
+    }
+  });
+</script>
+
+<script>
+  var bookingModal = document.getElementById("openModal");
+
+  var modals = document.getElementsByClassName("modal");
+
+  function closeModal(modal) {
+    modal.style.opacity = 0;
+    modal.style.pointerEvents = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == bookingModal) {
+      closeModal(bookingModal);
+    }
+
+    for (var i = 0; i < modals.length; i++) {
+      var modal = modals[i];
+      if (event.target == modal) {
+        closeModal(modal);
+      }
+    }
+  }
+</script>
+
+<script>
+var closeButton = document.querySelector('.popup-close');
+
+closeButton.addEventListener('click', function() {
+var popup = document.querySelector('.popup');
+popup.style.display = 'none';
+});
+</script>
+
+<script>
+  var popup = document.getElementById("popup");
+
+  function closePopup(popup) {
+    popup.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == popup) {
+      closePopup(popup);
+    }
+  }
+</script>
+</html>
